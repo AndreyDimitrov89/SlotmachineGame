@@ -1,4 +1,3 @@
-SlotMachine Game
 This slot machine game includes:
 
 3 slot reels with emoji symbols
