@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Slot Machine Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            text-align: center;
+        }
+        .slot-machine {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .slots {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .slot {
+            width: 100px;
+            height: 150px;
+            background-color: #fff;
+            margin: 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 72px;
+            border-radius: 10px;
+        }
+        #spin-btn {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: white;
+        }
+        #balance {
+            color: white;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slot-machine">
+        <div id="balance">Balance: $100</div>
+        <div class="slots">
+            <div class="slot" id="slot1">?</div>
+            <div class="slot" id="slot2">?</div>
+            <div class="slot" id="slot3">?</div>
+        </div>
+        <button id="spin-btn">Spin ($10)</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const slot1 = document.getElementById('slot1');
+        const slot2 = document.getElementById('slot2');
+        const slot3 = document.getElementById('slot3');
+        const spinBtn = document.getElementById('spin-btn');
+        const resultDiv = document.getElementById('result');
+        const balanceDiv = document.getElementById('balance');
+
+        const symbols = ['🍒', '🍋', '🍇', '🍉', '🔔', '7️⃣'];
+        let balance = 100;
+
+        function spin() {
+            if (balance < 10) {
+                resultDiv.textContent = 'Not enough money!';
+                return;
+            }
+
+            balance -= 10;
+            balanceDiv.textContent = `Balance: $${balance}`;
+
+            const result1 = symbols[Math.floor(Math.random() * symbols.length)];
+            const result2 = symbols[Math.floor(Math.random() * symbols.length)];
+            const result3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+            slot1.textContent = result1;
+            slot2.textContent = result2;
+            slot3.textContent = result3;
+
+            checkWin(result1, result2, result3);
+        }
+
+        function checkWin(sym1, sym2, sym3) {
+            if (sym1 === sym2 && sym2 === sym3) {
+                const winAmount = 50;
+                balance += winAmount;
+                resultDiv.textContent = `JACKPOT! You won $${winAmount}!`;
+            } else if (sym1 === sym2 || sym2 === sym3 || sym1 === sym3) {
+                const winAmount = 20;
+                balance += winAmount;
+                resultDiv.textContent = `You won $${winAmount}!`;
+            } else {
+                resultDiv.textContent = 'No win this time. Try again!';
+            }
+            balanceDiv.textContent = `Balance: $${balance}`;
+        }
+
+        spinBtn.addEventListener('click', spin);
+    </script>
+</body>
+</html>
